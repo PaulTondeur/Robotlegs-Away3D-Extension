@@ -97,7 +97,9 @@ package com.paultondeur.away3d.robotlegs.base {
 		public function registerMediators(object3D : ObjectContainer3D, mediators : Vector.<IMediator3D>) : void {
 			_mappingConfigByObject3D[object3D] = _mappingConfigByObject3DClassName[getQualifiedClassName(object3D)];
 			for each (var mediator:IMediator3D in mediators) {
-				_injector.mapValue(_reflector.getClass(mediator), mediator);
+				var mediatorClass:Class = _reflector.getClass(mediator);
+				_injector.hasMapping(mediatorClass) && _injector.unmap(mediatorClass);
+				_injector.mapValue(mediatorClass, mediator);
 				_mediatorsByObject3D[object3D] = mediator;
 				mediator.object3D = object3D;
 				mediator.preRegister();
